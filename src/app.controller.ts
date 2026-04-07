@@ -1,12 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { MetricsService } from './metrics/metrics.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly metricsService: MetricsService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get('health')
+  health(): { status: string; metrics: ReturnType<MetricsService['getSnapshot']> } {
+    return { status: 'ok', metrics: this.metricsService.getSnapshot() };
   }
 }
