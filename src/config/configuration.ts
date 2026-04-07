@@ -3,8 +3,6 @@ export const configuration = () => ({
   databaseUrl: process.env.DATABASE_URL ?? 'postgresql://crawler:crawler@localhost:5432/crawler',
   redisUrl: process.env.REDIS_URL ?? 'redis://localhost:6379',
   crawler: {
-    concurrency: parseInt(process.env.CRAWLER_CONCURRENCY ?? '3', 10),
-    rateLimitPerDomain: parseInt(process.env.CRAWLER_RATE_LIMIT_PER_DOMAIN ?? '1', 10),
     timeoutMs: parseInt(process.env.CRAWLER_TIMEOUT_MS ?? '15000', 10),
     playwrightEnabled: process.env.PLAYWRIGHT_ENABLED !== 'false',
   },

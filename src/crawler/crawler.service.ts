@@ -50,11 +50,7 @@ export class CrawlerService {
         this.crawlQueue.add(
           CRAWL_JOB,
           { jobId: job.id, jobUrlId: jobUrl.id, url: jobUrl.url },
-          {
-            jobId: jobUrl.id,
-            attempts: 3,
-            backoff: { type: 'exponential', delay: 5000 },
-          },
+          { jobId: jobUrl.id, backoff: { type: 'exponential', delay: 2000 } },
         ),
       ),
     );

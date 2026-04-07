@@ -19,7 +19,13 @@ export interface CrawlJobData {
   url: string;
 }
 
-@Processor(CRAWL_QUEUE, { concurrency: 3 })
+@Processor(CRAWL_QUEUE, {
+  concurrency: parseInt(process.env.CRAWLER_CONCURRENCY ?? '3', 10),
+  limiter: {
+    max: parseInt(process.env.CRAWLER_RATE_LIMIT_MAX ?? '1', 10),
+    duration: parseInt(process.env.CRAWLER_RATE_LIMIT_DURATION_MS ?? '1000', 10),
+  },
+})
 export class CrawlProcessor extends WorkerHost {
   private readonly logger = new Logger(CrawlProcessor.name);
 

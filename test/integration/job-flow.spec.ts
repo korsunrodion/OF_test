@@ -108,7 +108,7 @@ describe('CrawlerService', () => {
     expect(queue.add).toHaveBeenCalledTimes(3);
   });
 
-  it('enqueues jobs with retry attempts and exponential backoff', async () => {
+  it('enqueues jobs with only jobId option (retries configured at queue level)', async () => {
     const savedJob = {
       id: 'job-4',
       status: JobStatus.QUEUED,
@@ -123,8 +123,7 @@ describe('CrawlerService', () => {
     await crawlerService.createJob({ urls: ['https://example.com/u'] });
 
     const [, , options] = queue.add.mock.calls[0];
-    expect(options.attempts).toBeGreaterThan(1);
-    expect(options.backoff).toMatchObject({ type: 'exponential' });
+    expect(options).toEqual({ jobId: expect.any(String) });
   });
 
   it('uses NORMAL priority by default', async () => {

@@ -19,14 +19,18 @@ import { MetricsModule } from '../metrics/metrics.module';
         connection: { url: config.get<string>('redisUrl') },
       }),
     }),
-    BullModule.registerQueue({
+    BullModule.registerQueueAsync({
       name: CRAWL_QUEUE,
-      defaultJobOptions: {
-        attempts: 3,
-        backoff: { type: 'exponential', delay: 1000 },
-        removeOnComplete: true,
-        removeOnFail: false,
-      },
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: () => ({
+        defaultJobOptions: {
+          attempts: 3,
+          backoff: { type: 'exponential', delay: 4000 },
+          removeOnComplete: true,
+          removeOnFail: false,
+        },
+      }),
     }),
     TypeOrmModule.forFeature([Job, JobUrl, Profile]),
     ScraperModule,
